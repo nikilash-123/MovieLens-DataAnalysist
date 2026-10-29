@@ -1,0 +1,69 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load dataset
+df = pd.read_excel("MovieLens_Cleaned.xlsx")
+
+# Convert Rating_Date to datetime
+df["Rating_Date"] = pd.to_datetime(df["Rating_Date"])
+
+# ==========================================
+# TIME SERIES ANALYSIS
+# ==========================================
+
+# Monthly rating activityg0bfd
+monthly_ratings = (
+    df.set_index("Rating_Date")
+      .resample("ME")["Rating"]
+      .count()
+)
+
+print("\nMonthly Rating Activity:")
+print(monthly_ratings)
+
+
+# ==========================================
+# TREND ANALYSIS
+# ==========================================
+
+# Monthly average rating
+monthly_avg_rating = (
+    df.set_index("Rating_Date")
+      .resample("ME")["Rating"]
+      .mean()
+)
+
+print("\nMonthly Average Rating:")
+print(monthly_avg_rating)
+
+
+# ==========================================
+# PLOT RATING ACTIVITY TREND
+# ==========================================
+
+plt.figure(figsize=(10, 5))
+
+monthly_ratings.plot()
+
+plt.title("Monthly Movie Rating Activity Trend")
+plt.xlabel("Date")
+plt.ylabel("Number of Ratings")
+
+plt.tight_layout()
+plt.show()
+
+
+# ==========================================
+# PLOT AVERAGE RATING TREND
+# ==========================================
+
+plt.figure(figsize=(10, 5))
+
+monthly_avg_rating.plot()
+
+plt.title("Monthly Average Movie Rating Trend")
+plt.xlabel("Date")
+plt.ylabel("Average Rating")
+
+plt.tight_layout()
+plt.show()
